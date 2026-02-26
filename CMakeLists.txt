@@ -51,7 +51,7 @@ set(NANOFLOAT_INC "${NANOFLOAT_DIR}/inc")
 RECURSIVE_FIND_FILE(NANOFLOAT_SRC "${NANOFLOAT_DIR}/src" "*.c")
 
 # create library.
-add_library(nano-float STATIC ${NANOFLOAT_SRC})
+add_library(nano-float ${NANOFLOAT_SRC})
 
 ###############################################################################
 # cocoos
@@ -64,7 +64,7 @@ set(COCOOS_INC "${COCOOS_DIR}/inc")
 RECURSIVE_FIND_FILE(COCOOS_SRC "${COCOOS_DIR}/src" "*.c")
 
 # create cocoos library.
-add_library(cocoos STATIC ${COCOOS_SRC})
+add_library(cocoos ${COCOOS_SRC})
 
 ###############################################################################
 # bme280
@@ -77,7 +77,7 @@ set(BME280_INC "${BME280_DIR}/src")
 RECURSIVE_FIND_FILE(BME280_SRC "${BME280_DIR}/src" "*.cpp")
 
 # create bme280 library.
-add_library(bme280 STATIC ${BME280_SRC})
+add_library(bme280 ${BME280_SRC})
 
 ###############################################################################
 # boost
@@ -125,7 +125,7 @@ RECURSIVE_FIND_DIR(LOGGER_INC  "${LOGGER_DIR}" "*.h")
 RECURSIVE_FIND_FILE(LOGGER_SRC "${LOGGER_DIR}" "*.cpp")
 
 # create logger library.
-add_library(logger STATIC ${LOGGER_SRC})
+add_library(logger ${LOGGER_SRC})
 
 ###############################################################################
 # stm32/bluepill
@@ -138,7 +138,7 @@ RECURSIVE_FIND_DIR(BLUEPILL_INC  "${BLUEPILL_DIR}" "*.h")
 RECURSIVE_FIND_FILE(BLUEPILL_SRC "${BLUEPILL_DIR}" "*.cpp")
 
 # create bluepill library.
-add_library(bluepill STATIC ${BLUEPILL_SRC})
+add_library(bluepill ${BLUEPILL_SRC})
 
 ###############################################################################
 # stm32/baseloader
@@ -153,7 +153,7 @@ set(BASELOADER_INC
 SOURCE_FILES(BASELOADER_SRC "${BASELOADER_DIR}" "*.c")
 
 # create baseloader library.
-add_library(baseloader STATIC ${BASELOADER_SRC})
+add_library(baseloader ${BASELOADER_SRC})
 
 ###############################################################################
 # stm32/bootloader
@@ -171,7 +171,7 @@ SOURCE_FILES(BOOTLOADER_STM32F103 "${BOOTLOADER_DIR}/stm32f103" "*.c")
 LIST(APPEND BOOTLOADER_SRC ${BOOTLOADER_STM32F103})
 
 # create bootloader library.
-add_library(bootloader STATIC ${BOOTLOADER_SRC})
+add_library(bootloader ${BOOTLOADER_SRC})
 
 ###############################################################################
 # stm32/hal
@@ -190,10 +190,17 @@ LIST(
     "${CMAKE_CURRENT_SOURCE_DIR}/asm/CortexContextSwitch.s"
 )
 
-add_library(hal STATIC ${HAL_SRC})
+add_library(hal ${HAL_SRC})
 
+# ENABLE_EXPORTS must be enabled to allow .o files to be linked with an executable
+set(ENABLE_EXPORTS ON)
+
+# create hal object files (.o) instead of library (.a). TODO: add_library(... $<TARGET_OBJECTS:hal> ...)
 add_library(hal_obj OBJECT ${HAL_SRC})
-add_library(hal STATIC $<TARGET_OBJECTS:hal_obj>)
+
+#"${HAL_DIR}/reset_handler.c"
+#"${HAL_DIR}/codal_target_hal.cpp"
+#"${HAL_DIR}/unit_test.c"
 
 ###############################################################################
 # stm32/model
@@ -206,7 +213,7 @@ RECURSIVE_FIND_DIR(MODEL_INC  "${MODEL_DIR}" "*.h")
 RECURSIVE_FIND_FILE(MODEL_SRC "${MODEL_DIR}" "*.cpp")
 
 # create model library.
-add_library(model STATIC ${MODEL_SRC})
+add_library(model ${MODEL_SRC})
 
 ###############################################################################
 # stm32/cm
@@ -219,7 +226,7 @@ RECURSIVE_FIND_DIR(CM_INC  "${CM_DIR}" "*.h")
 RECURSIVE_FIND_FILE(CM_SRC "${CM_DIR}" "*.cpp")
 
 # create cm library.
-add_library(cm STATIC ${CM_SRC})
+add_library(cm ${CM_SRC})
 
 ###############################################################################
 # stm32/adcint
@@ -232,7 +239,7 @@ RECURSIVE_FIND_DIR(ADCINT_INC  "${ADCINT_DIR}" "*.h")
 RECURSIVE_FIND_FILE(ADCINT_SRC "${ADCINT_DIR}" "*.cpp")
 
 # create adcint library.
-add_library(adcint STATIC ${ADCINT_SRC})
+add_library(adcint ${ADCINT_SRC})
 
 ###############################################################################
 # stm32/i2cint
@@ -245,7 +252,7 @@ RECURSIVE_FIND_DIR(I2CINT_INC  "${I2CINT_DIR}" "*.h")
 RECURSIVE_FIND_FILE(I2CINT_SRC "${I2CINT_DIR}" "*.cpp")
 
 # create i2cint library.
-add_library(i2cint STATIC ${I2CINT_SRC})
+add_library(i2cint ${I2CINT_SRC})
 
 ###############################################################################
 # stm32/porting
@@ -258,7 +265,7 @@ RECURSIVE_FIND_DIR(PORTING_INC  "${PORTING_DIR}" "*.h")
 RECURSIVE_FIND_FILE(PORTING_SRC "${PORTING_DIR}" "*.cpp")
 
 # create porting library.
-add_library(porting STATIC ${PORTING_SRC})
+add_library(porting ${PORTING_SRC})
 
 ###############################################################################
 # stm32/simulator
@@ -271,7 +278,7 @@ RECURSIVE_FIND_DIR(SIMULATOR_INC  "${SIMULATOR_DIR}" "*.h")
 RECURSIVE_FIND_FILE(SIMULATOR_SRC "${SIMULATOR_DIR}" "*.cpp")
 
 # create simulator library.
-add_library(simulator STATIC ${SIMULATOR_SRC})
+add_library(simulator ${SIMULATOR_SRC})
 
 ###############################################################################
 # stm32/spiint
@@ -284,7 +291,7 @@ RECURSIVE_FIND_DIR(SPIINT_INC  "${SPIINT_DIR}" "*.h")
 RECURSIVE_FIND_FILE(SPIINT_SRC "${SPIINT_DIR}" "*.cpp")
 
 # create spiint library.
-add_library(spiint STATIC ${SPIINT_SRC})
+add_library(spiint ${SPIINT_SRC})
 
 ###############################################################################
 # stm32/uartint
@@ -297,7 +304,7 @@ RECURSIVE_FIND_DIR(UARTINT_INC  "${UARTINT_DIR}" "*.h")
 RECURSIVE_FIND_FILE(UARTINT_SRC "${UARTINT_DIR}" "*.cpp")
 
 # create uartint library.
-add_library(uartint STATIC ${UARTINT_SRC})
+add_library(uartint ${UARTINT_SRC})
 
 ###############################################################################
 # newlib
@@ -394,7 +401,7 @@ set(  # source files for usb
 )
 
 # create libopencm3 library.
-add_library(libopencm3 STATIC
+add_library(libopencm3 
     ${LIBOPENCM3_CM3}
     ${LIBOPENCM3_COMMON}
     ${LIBOPENCM3_F1}
@@ -420,7 +427,7 @@ set(
 )
 
 # create our codal-libopencm3 target.
-add_library(codal-libopencm3 STATIC ${TOP_LEVEL_SOURCE_FILES})
+add_library(codal-libopencm3 ${TOP_LEVEL_SOURCE_FILES})
 message("TOP_LEVEL_SOURCE_FILES: ${TOP_LEVEL_SOURCE_FILES}")
 
 ###############################################################################
