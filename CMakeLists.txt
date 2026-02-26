@@ -498,6 +498,9 @@ target_link_libraries(
     cm
     model
     bme280
+    -lc       # C standard library (newlib)
+    -lgcc     # GCC support library
+    -lnosys   # minimal system call stubs    
 )
 
 # MODEL_INCLUDE_DIRS will be exposed to the main application.
